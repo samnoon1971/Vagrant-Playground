@@ -2,7 +2,6 @@
 ## VM Provisioning using CLI
 
 ```
-cd Vagrant-Playground
 vagrant up
 ```
 
