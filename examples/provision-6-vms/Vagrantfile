@@ -1,30 +1,21 @@
+Vagrant.configure("2") do |config|
 
-## VM Provisioning using CLI
+  (1..6).each do |i|
+    config.vm.define "vm#{i}" do |node|
+      node.vm.box = "ubuntu/bionic64"
+      node.vm.network "private_network", ip: "192.168.56.#{i + 1}"
+      node.vm.provider "virtualbox" do |vb|
+        vb.name = "vm#{i}"
+        vb.memory = "2048"
+        vb.cpus = 1
+      end
+    end
+  end
 
-```
-cd Vagrant-Playground
-vagrant up
-```
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+  end
 
-## Connecting to the Virtual Machines using SSH
+end
 
-```
-# ssh into vm1
-ssh -i .vagrant/machines/vm1/virtualbox/private_key vagrant@192.168.56.2
-
-# ssh into vm2
-ssh -i .vagrant/machines/vm2/virtualbox/private_key vagrant@192.168.56.3
- 
-# ssh into vm3
-ssh -i .vagrant/machines/vm3/virtualbox/private_key vagrant@192.168.56.4
-
-# ssh into vm4
-ssh -i .vagrant/machines/vm4/virtualbox/private_key vagrant@192.168.56.5
-
-# ssh into vm5
-ssh -i .vagrant/machines/vm5/virtualbox/private_key vagrant@192.168.56.6
-
-# ssh into vm6
-ssh -i .vagrant/machines/vm6/virtualbox/private_key vagrant@192.168.56.7
-```
 
