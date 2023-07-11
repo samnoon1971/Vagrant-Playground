@@ -14,6 +14,7 @@ This LAMP stack can be on a single node or multiple nodes. The inventory file
 ```
 
 [ubuntu_servers_group_1]
+
 ubuntu_vm_1 ansible_host=192.168.56.2 ansible_ssh_private_key_file=/home/samnoon/Documents/abrar/.vagrant/machines/vm1/virtualbox/private_key ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 ubuntu_vm_2 ansible_host=192.168.56.3 ansible_ssh_private_key_file=/home/samnoon/Documents/abrar/.vagrant/machines/vm2/virtualbox/private_key ansible_ssh_common_args='-o StrictHostKeyChecking=no'
