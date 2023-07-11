@@ -1,0 +1,53 @@
+---
+# This playbook will install MySQL and create a database user with appropriate permissions.
+
+- name: Install MySQL package
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - mysql-server
+    - python3-mysqldb
+    - python3-selinux
+    - python3-semanage
+
+- name: Configure AppArmor to allow MySQL to start on any port
+  command:
+    cmd: aa-complain /usr/sbin/mysqld
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 20
+
+- name: Create MySQL configuration file
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/my.cnf
+  notify:
+    - restart mysql
+
+- name: Start MySQL Service
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Insert iptables rule
+  lineinfile:
+    dest: /etc/ufw/rules.v4
+    create: yes
+    state: present
+    regexp: "{{ mysql_port }}"
+    insertafter: "^:OUTPUT "
+    line: "-A INPUT -p tcp --dport {{ mysql_port }} -j ACCEPT"
+  notify: restart ufw
+
+- name: Create Application Database
+  mysql_db:
+    name: "{{ dbname }}"
+    state: present
+
+- name: Create Application DB User
+  mysql_user:
+    name: "{{ dbuser }}"
+    password: "{{ upassword }}"
+    priv: "*.*:ALL"
+    host: '%'
+    state: present
