@@ -7,7 +7,7 @@ These playbooks require Ansible 1.2.
 
 These playbooks are meant to be a reference and starter's guide to building
 Ansible Playbooks. These playbooks were tested on Ubuntu 18.04LTS (Deployed using Vagrant with root user: `vagrant`) so I recommend
-that you use CentOS or RHEL to test these modules.
+that you use Ubuntu to test these modules.
 
 This LAMP stack can be on a single node or multiple nodes. The inventory file
 'hosts' defines the nodes in which the stacks should be configured.
