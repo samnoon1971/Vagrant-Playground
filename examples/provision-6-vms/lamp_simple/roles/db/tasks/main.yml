@@ -1,5 +1,10 @@
 ---
 # This playbook will install MySQL and create a database user with appropriate permissions.
+- name: Update apt cache
+  apt: 
+    update_cache: yes 
+    cache_valid_time: 600 
+  when: ansible_os_family == 'Debian'
 
 - name: Install MySQL package
   apt:
