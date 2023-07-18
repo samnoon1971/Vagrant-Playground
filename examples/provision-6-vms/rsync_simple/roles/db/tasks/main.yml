@@ -16,20 +16,12 @@
     cmd: aa-complain /usr/sbin/mysqld
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 20
 
-- name: Save root password in .my.cnf
-  template:
-    src: my.cnf.j2
-    dest: /root/.my.cnf
-    owner: vagrant
-    mode: '0777'
-
 - name: Create MySQL configuration file
   template:
     src: my.cnf.j2
     dest: /etc/mysql/my.cnf
   notify:
     - restart mysql
-
 
 - name: Start MySQL Service
   service:
@@ -46,18 +38,16 @@
     insertafter: "^:OUTPUT "
     line: "-A INPUT -p tcp --dport {{ mysql_port }} -j ACCEPT"
   notify: restart ufw
-  
+
+- name: Create Application Database
+  mysql_db:
+    name: "{{ dbname }}"
+    state: present
+
 - name: Create Application DB User
   mysql_user:
     name: "{{ dbuser }}"
     password: "{{ upassword }}"
     priv: "*.*:ALL"
     host: '%'
-    login_unix_socket: /var/run/mysqld/mysqld.sock
     state: present
-- name: Create Application Database
-  mysql_db:
-    login_unix_socket: /var/run/mysqld/mysqld.sock
-    name: "{{ dbname }}"
-    state: present
-

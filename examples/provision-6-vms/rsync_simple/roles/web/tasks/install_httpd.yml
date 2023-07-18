@@ -1,0 +1,36 @@
+---
+# These tasks install Apache HTTP Server and PHP modules.
+
+- name: Install Apache and PHP modules
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apache2
+    - php
+    - php-mysql
+    - git
+- name: Set Apache port variable
+  set_fact:
+    apache_port: 80
+    
+- name: Insert iptables rule for Apache
+  lineinfile:
+    dest: /etc/ufw/rules.v4
+    create: yes
+    state: present
+    regexp: "{{ apache_port }}"
+    insertafter: "^:OUTPUT "
+    line: "-A INPUT -p tcp --dport {{ apache_port }} -j ACCEPT"
+  notify: restart ufw
+
+- name: Apache service state
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: Configure AppArmor to allow Apache to connect to remote database
+  command:
+    cmd: aa-complain /usr/sbin/apache2
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 20

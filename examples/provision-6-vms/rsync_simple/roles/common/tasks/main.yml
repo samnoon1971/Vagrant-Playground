@@ -1,0 +1,33 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: Install ntp
+  apt:
+    name: ntp
+    state: present
+  tags: ntp
+
+- name: Configure ntp file
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+  tags: ntp
+  notify: restart ntp
+
+- name: Start the ntp service
+  service:
+    name: ntp
+    state: started
+    enabled: yes
+  tags: ntp
+
+- name: Test to see if AppArmor is running
+  command: apparmor_status
+  register: apparmor_status_output
+  changed_when: false
+
+- name: Set fact for AppArmor status
+  set_fact:
+    apparmor_running: "{{ apparmor_status_output.stdout is search('apparmor module is loaded') }}"
+  changed_when: false
+  run_once: true
