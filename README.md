@@ -10,7 +10,7 @@ git clone https://github.com/samnoon1971/Vagrant-Playground.git
 ```
 
 
-## Commands
+## Environment Setup
 
 To provision VirtualBox VMs using Vagrant:
 ```bash
