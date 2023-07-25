@@ -36,7 +36,16 @@ ubuntu_vm_6 ansible_host=192.168.56.7 ansible_ssh_private_key_file=../.vagrant/m
 The stack can be deployed using the following
 command:
 
-        ansible-playbook -i hosts site.yml
+```bash
+ ansible-playbook -i hosts site.yml
+```
+Or if you are using Ansible custom docker image:
+
+```bash
+cd provision-6-ubuntu-vms/lamp_simple/
+
+docker run --rm -v "$(pwd)":/ansible -w /ansible abrar/ansible:1.0.0 ansible-playbook -i provision-6-ubuntu-vms/lamp_simple/hosts provision-6-ubuntu-vms/lamp_simple/site.yml
+```
 
 Once done, you can check the results by browsing to http://localhost/index.php.
 You should see a simple test page and a list of databases retrieved from the
