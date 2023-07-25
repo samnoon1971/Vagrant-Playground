@@ -12,6 +12,9 @@ git clone https://github.com/samnoon1971/Vagrant-Playground.git
 
 ## Environment Setup
 
+Note: You must have Virtualbox installed on your machine.
+
+
 To provision VirtualBox VMs using Vagrant:
 ```bash
 vagrant up
