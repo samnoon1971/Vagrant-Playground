@@ -1,7 +1,7 @@
 
 ## VM Provisioning using CLI
 
-### OS: Ubuntu
+OS: Ubuntu
 
 ```
 vagrant up
@@ -28,4 +28,3 @@ ssh -i .vagrant/machines/vm5/virtualbox/private_key vagrant@192.168.56.6
 # ssh into vm6
 ssh -i .vagrant/machines/vm6/virtualbox/private_key vagrant@192.168.56.7
 ```
-
