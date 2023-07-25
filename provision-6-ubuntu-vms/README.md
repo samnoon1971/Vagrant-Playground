@@ -1,6 +1,8 @@
 
 ## VM Provisioning using CLI
 
+### OS: Ubuntu
+
 ```
 vagrant up
 ```
